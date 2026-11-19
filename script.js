@@ -1,0 +1,19 @@
+const $=id=>document.getElementById(id);
+const screens={home:$('homeScreen'),game:$('gameScreen'),result:$('resultScreen')};
+let world='letters',round=0,score=0,answered=false,soundOn=true;
+let stars=Number(localStorage.getItem('kuyoStars')||0);
+$('starCount').textContent='⭐ '+stars;
+const sets={
+ letters:{title:'Pulau Huruf',emoji:'🔤',subtitle:'Ayo kenali huruf bersama KUYO!',items:[
+  {q:'Huruf apakah ini?',p:'A',a:['A','B','C'],c:'A'},{q:'Huruf apakah ini?',p:'M',a:['N','M','W'],c:'M'},{q:'Huruf apakah ini?',p:'S',a:['Z','S','E'],c:'S'},{q:'Huruf apakah ini?',p:'B',a:['D','P','B'],c:'B'},{q:'Huruf apakah ini?',p:'K',a:['K','H','R'],c:'K'}]},
+ numbers:{title:'Pulau Angka',emoji:'🔢',subtitle:'Ayo berhitung bersama KUYO!',items:[
+  {q:'Berapa jumlah bintang ini?',p:'⭐ ⭐ ⭐',a:['2','3','4'],c:'3'},{q:'Angka berapakah ini?',p:'5',a:['3','5','8'],c:'5'},{q:'Berapa jumlah apel ini?',p:'🍎 🍎',a:['1','2','3'],c:'2'},{q:'Angka setelah 6 adalah ...',p:'6, ...',a:['5','7','8'],c:'7'},{q:'Berapa jumlah bola ini?',p:'⚽ ⚽ ⚽ ⚽',a:['3','4','5'],c:'4'}]},
+ quiz:{title:'Pulau Kuis',emoji:'🧠',subtitle:'Saatnya tunjukkan kemampuanmu!',items:[
+  {q:'Hewan yang berbunyi “meong” adalah ...',p:'🐾',a:['Kucing','Bebek','Sapi'],c:'Kucing'},{q:'Warna daun biasanya ...',p:'🍃',a:['Ungu','Hijau','Biru'],c:'Hijau'},{q:'Benda untuk menulis adalah ...',p:'✏️',a:['Sendok','Pensil','Sepatu'],c:'Pensil'},{q:'Matahari terlihat pada waktu ...',p:'☀️',a:['Malam','Pagi/siang','Tengah malam'],c:'Pagi/siang'},{q:'Buah yang berwarna kuning adalah ...',p:'🍌',a:['Pisang','Anggur','Stroberi'],c:'Pisang'}]}
+};
+function show(name){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[name].classList.add('active');}
+function start(w){world=w;round=0;score=0;show('game');$('gameTitle').textContent=sets[w].title;$('worldEmoji').textContent=sets[w].emoji;$('gameSubtitle').textContent=sets[w].subtitle;renderQuestion();}
+function renderQuestion(){answered=false;const item=sets[world].items[round];$('questionNumber').textContent=`Soal ${round+1} dari 5`;$('progressText').textContent=Math.round(round/5*100)+'%';$('progressBar').style.width=(round/5*100)+'%';$('questionText').textContent=item.q;$('prompt').textContent=item.p;$('feedback').textContent='';$('feedback').className='feedback';$('nextBtn').disabled=true;$('nextBtn').textContent=round===4?'Lihat Hasil 🏆':'Soal Berikutnya ➜';$('answers').innerHTML='';[...item.a].sort(()=>Math.random()-.5).forEach(answer=>{const b=document.createElement('button');b.className='answer';b.textContent=answer;b.onclick=()=>choose(b,answer,item.c);$('answers').appendChild(b);});}
+function choose(btn,answer,correct){if(answered)return;answered=true;document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');});if(answer===correct){score++;$('feedback').textContent='Hebat! Jawabanmu benar! ⭐';$('feedback').classList.add('good');}else{$('feedback').textContent='Tidak apa-apa, ayo terus belajar! Jawaban yang benar berwarna hijau.';$('feedback').classList.add('try');btn.classList.add('wrong');} $('nextBtn').disabled=false;}
+function finish(){stars+=score;localStorage.setItem('kuyoStars',stars);$('starCount').textContent='⭐ '+stars;$('earnedStars').textContent='⭐'.repeat(score)+'☆'.repeat(5-score);$('resultMessage').textContent=`Kamu mendapat ${score} dari 5 bintang. KUYO bangga padamu!`;$('progressBar').style.width='100%';show('result');}
+$('startBtn').onclick=()=>start('letters');document.querySelectorAll('.world-card').forEach(b=>b.onclick=()=>start(b.dataset.world));$('backBtn').onclick=()=>show('home');$('nextBtn').onclick=()=>{if(round<4){round++;renderQuestion();}else finish();};$('againBtn').onclick=()=>start(world);$('homeBtn').onclick=()=>show('home');$('soundBtn').onclick=()=>{soundOn=!soundOn;$('soundBtn').textContent=soundOn?'🔊':'🔇';};

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ff454b">
+  <title>KIDDO WORLD — Petualangan Belajar Bersama KUYO</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">🎮</span><span>KIDDO <b>WORLD</b></span></div>
+      <div class="top-actions">
+        <span class="pill" id="starCount">⭐ 0</span>
+        <button class="sound-btn" id="soundBtn" aria-label="Suara">🔊</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="screen active" id="homeScreen">
+        <div class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">PETUALANGAN BELAJAR</span>
+            <h1>Halo, teman kecil!</h1>
+            <p>Yuk belajar sambil bermain bersama KUYO!</p>
+            <button class="primary-btn" id="startBtn">Mulai Petualangan <span>➜</span></button>
+          </div>
+          <div class="mascot-frame">
+            <img src="assets/characters/kuyo-reference.jpg" alt="Maskot KUYO" onerror="this.style.display='none';document.getElementById('mascotFallback').style.display='grid'">
+            <div id="mascotFallback" class="mascot-fallback">🧢<strong>KUYO</strong><small>Play More, Be Happy!</small></div>
+          </div>
+        </div>
+        <h2>Pilih dunia petualanganmu</h2>
+        <div class="world-grid">
+          <button class="world-card letters" data-world="letters"><span class="world-icon">🔤</span><strong>Pulau Huruf</strong><small>Kenali huruf A sampai Z</small><span class="go">Mainkan ➜</span></button>
+          <button class="world-card numbers" data-world="numbers"><span class="world-icon">🔢</span><strong>Pulau Angka</strong><small>Belajar angka 1 sampai 10</small><span class="go">Mainkan ➜</span></button>
+          <button class="world-card quiz" data-world="quiz"><span class="world-icon">🧠</span><strong>Pulau Kuis</strong><small>Uji pengetahuanmu</small><span class="go">Mainkan ➜</span></button>
+        </div>
+        <footer>KUYO says: “Play More, Be Happy!”</footer>
+      </section>
+
+      <section class="screen" id="gameScreen">
+        <button class="back-btn" id="backBtn">← Kembali ke Dunia</button>
+        <div class="game-heading"><span id="worldEmoji">🔤</span><div><h1 id="gameTitle">Pulau Huruf</h1><p id="gameSubtitle">Ayo pilih jawaban yang benar!</p></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span id="questionNumber">Soal 1 dari 5</span><span id="progressText">0%</span></div><div class="progress"><div id="progressBar"></div></div></div>
+        <div class="question-card">
+          <div class="question-mascot">🧢</div>
+          <div class="question-content"><p class="kuyo-says">KUYO bertanya:</p><h2 id="questionText">Huruf apakah ini?</h2><div class="big-prompt" id="prompt">A</div><div class="answers" id="answers"></div><p class="feedback" id="feedback" aria-live="polite"></p></div>
+        </div>
+        <button class="primary-btn next-btn" id="nextBtn" disabled>Soal Berikutnya ➜</button>
+      </section>
+
+      <section class="screen" id="resultScreen">
+        <div class="result-card">
+          <div class="trophy">🏆</div><span class="eyebrow">PETUALANGAN SELESAI</span>
+          <h1>Hebat sekali!</h1><p id="resultMessage">KUYO bangga padamu!</p>
+          <div class="earned" id="earnedStars">⭐ ⭐ ⭐</div>
+          <button class="primary-btn" id="againBtn">Main Lagi</button>
+          <button class="secondary-btn" id="homeBtn">Kembali ke Beranda</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
